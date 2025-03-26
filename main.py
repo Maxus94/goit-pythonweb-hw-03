@@ -3,6 +3,8 @@ import mimetypes
 import pathlib
 import json
 
+from pathlib import Path
+
 from datetime import datetime
 from http.server import HTTPServer, BaseHTTPRequestHandler
 from jinja2 import Environment, FileSystemLoader
@@ -19,7 +21,9 @@ class HttpHandler(BaseHTTPRequestHandler):
             with open("storage\data.json", "r+") as fh:
                 logs = json.load(fh)
                 print(logs)
-                env = Environment(loader=FileSystemLoader("."))
+                BASE_DIR = Path(__file__).resolve().parent
+                env = Environment(loader=FileSystemLoader(BASE_DIR))
+                # env = Environment(loader=FileSystemLoader("."))
                 template = env.get_template("read.html")
                 output = template.render(
                     logs=logs,
