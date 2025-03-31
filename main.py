@@ -18,7 +18,9 @@ class HttpHandler(BaseHTTPRequestHandler):
         elif pr_url.path == "/message":
             self.send_html_file("message.html")
         elif pr_url.path == "/read":
-            with open("storage\data.json", "r+") as fh:
+            data_path = Path("storage") / "data.json"
+            with open(data_path, "r+") as fh:
+                # with open("storage\data.json", "r+") as fh:
                 logs = json.load(fh)
                 print(logs)
                 BASE_DIR = Path(__file__).resolve().parent
@@ -48,10 +50,13 @@ class HttpHandler(BaseHTTPRequestHandler):
             key: value for key, value in [el.split("=") for el in data_parse.split("&")]
         }
         print(data_dict)
-        with open("storage\data.json", "r+") as fh:
+        data_path = Path("storage") / "data.json"
+        with open(data_path, "r+") as fh:
+            # with open("storage\data.json", "r+") as fh:
             logs = json.load(fh)
             print(logs)
-        with open("storage\data.json", "w") as fh:
+        with open(data_path, "w") as fh:
+            # with open("storage\data.json", "w") as fh:
             logs[str(now)] = data_dict
             print(logs)
             fh.write(json.dumps(logs))
