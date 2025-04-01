@@ -20,12 +20,9 @@ class HttpHandler(BaseHTTPRequestHandler):
         elif pr_url.path == "/read":
             data_path = Path("storage") / "data.json"
             with open(data_path, "r+") as fh:
-                # with open("storage\data.json", "r+") as fh:
                 logs = json.load(fh)
-                print(logs)
                 BASE_DIR = Path(__file__).resolve().parent
                 env = Environment(loader=FileSystemLoader(BASE_DIR))
-                # env = Environment(loader=FileSystemLoader("."))
                 template = env.get_template("read.html")
                 output = template.render(
                     logs=logs,
@@ -41,24 +38,16 @@ class HttpHandler(BaseHTTPRequestHandler):
 
     def do_POST(self):
         data = self.rfile.read(int(self.headers["Content-Length"]))
-        print(data)
         data_parse = urllib.parse.unquote_plus(data.decode())
-        print(data_parse)
         now = datetime.now()
-        print(now)
         data_dict = {
             key: value for key, value in [el.split("=") for el in data_parse.split("&")]
         }
-        print(data_dict)
         data_path = Path("storage") / "data.json"
         with open(data_path, "r+") as fh:
-            # with open("storage\data.json", "r+") as fh:
             logs = json.load(fh)
-            print(logs)
         with open(data_path, "w") as fh:
-            # with open("storage\data.json", "w") as fh:
             logs[str(now)] = data_dict
-            print(logs)
             fh.write(json.dumps(logs))
         self.send_response(302)
         self.send_header("Location", "/")

@@ -10,7 +10,7 @@
 <body>
 <ul>
     {% for key in logs.keys() -%}
-    <li>{{ key }} {{ logs[key]["username"] }}</li>
+    <li>{{ key }} User: {{ logs[key]["username"] }}, Message: {{ logs[key]["message"] }}</li>
     {% endfor %}
 </ul>
 </body>
